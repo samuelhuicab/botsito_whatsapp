@@ -1,4 +1,4 @@
-# Cómo contribuir 🤝
+# Cómo contribuir
 
 ¡Gracias por querer ayudar! Esta guía explica cómo preparar el proyecto y, sobre todo, **cómo crear comandos**, que es lo que más se edita.
 
@@ -22,7 +22,7 @@ Necesitas Node.js 22 o superior. Detalles en el [README](README.md#-empezar-en-t
 | ¿Se sube al repo? | Sí, lo usan todos                      | **No**, solo vive en tu servidor            |
 | Ideal para        | Cosas útiles para cualquiera           | Tu API, chistes internos, cosas de tu grupo |
 | Claves de APIs    | Solo APIs **sin clave** o con `ctx.ai` | Las que quieras, en tu `.env`               |
-| En `!help`        | Normal                                 | Con 🔒                                      |
+| En `!help`        | Normal                                 | Marcado como privado                        |
 
 Si un comando privado tiene el mismo `name` que uno público, **el privado lo reemplaza**. Así puedes personalizar, por ejemplo, `!help` sin tocar el repo.
 
@@ -37,14 +37,14 @@ export default {
   aliases: ['hola'], // opcional: también responde a !hola
   description: 'Te saluda', // sale en !help
   usage: '!saludo [nombre]', // opcional, sale en !help saludo
-  usesAI: false, // true si usa ctx.ai (aplica el cooldown de IA y marca 🤖)
+  usesAI: false, // true si usa ctx.ai (aplica el cooldown de IA)
   groupOnly: false, // opcional: solo en grupos
   ownerOnly: false, // opcional: solo OWNER_NUMBER (y no sale en !help para los demás)
   cooldownSeconds: 5, // opcional (3 por defecto)
 
   async run(ctx) {
     const who = ctx.text || ctx.sender.name || 'amigo';
-    await ctx.reply(`¡Hola, ${who}! 👋`);
+    await ctx.reply(`¡Hola, ${who}!`);
   },
 };
 ```
@@ -86,7 +86,7 @@ async run(ctx) {
     await ctx.reply(`Encontré ${data.total} cosas`);
   } catch (err) {
     ctx.log.warn({ status: err.status }, 'Falló la API');
-    await ctx.reply('La API no respondió, intenta luego 😅');
+    await ctx.reply('La API no respondió, intenta más tarde.');
   }
 }
 ```
@@ -146,4 +146,4 @@ Los tres deben pasar (GitHub Actions los corre en cada PR). Luego:
 2. Describe en el PR **qué** cambia y **cómo probarlo**.
 3. Un cambio por PR, de preferencia.
 
-¿Dudas o ideas? Abre un [issue](https://github.com/samuelhuicab/Bot_15_Diciembre/issues). 🙌
+¿Dudas o ideas? Abre un [issue](https://github.com/samuelhuicab/Bot_15_Diciembre/issues).

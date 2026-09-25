@@ -1,27 +1,27 @@
-# Botsito 🤖
+# Botsito
 
 [![CI](https://github.com/samuelhuicab/Bot_15_Diciembre/actions/workflows/ci.yml/badge.svg)](https://github.com/samuelhuicab/Bot_15_Diciembre/actions/workflows/ci.yml)
 [![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
 
 Bot de WhatsApp **open source** pensado como **base extensible**: trae comandos útiles, platica con IA **gratis** (Groq, Gemini, OpenRouter) y cualquiera puede agregar sus propios comandos, **públicos** (se suben al repo) o **privados** (solo viven en tu servidor).
 
-> ⚠️ **Aviso:** usa [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js), que **no es oficial**. WhatsApp puede banear el número. **Usa un número secundario** para el bot.
+> **Aviso:** usa [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js), que **no es oficial**. WhatsApp puede banear el número. **Usa un número secundario** para el bot.
 
-## ✨ Qué hace
+## Qué hace
 
-- 💬 **Modo plática con IA:** háblale por su nombre (`bot ¿qué onda?`) o mencionándolo con @. Recuerda los últimos mensajes de cada chat.
-- 🔁 **IA gratis con respaldo:** si un proveedor llega a su límite o falla, pasa solo al siguiente.
-- 🧩 **Comandos listos:** clima, tipo de cambio, recordatorios, calculadora, traductor y más.
-- 🔒 **Comandos y personalidad privados:** cada quien personaliza su bot sin tocar el repo.
-- 🪶 **Ligero:** sin base de datos; corre en un VPS de 1 vCPU / 1–2 GB.
+- **Conversación con IA:** escribe su nombre al inicio del mensaje (`bot, ¿cómo estás?`) o menciónalo con @. Recuerda los últimos mensajes de cada chat.
+- **IA gratis con respaldo:** si un proveedor llega a su límite o falla, pasa solo al siguiente.
+- **Comandos listos:** clima, tipo de cambio, recordatorios, calculadora, traductor y más.
+- **Comandos y personalidad privados:** cada quien personaliza su bot sin tocar el repo.
+- **Ligero:** sin base de datos; corre en un VPS de 1 vCPU / 1–2 GB.
 
-## 📋 Requisitos
+## Requisitos
 
 - [Node.js](https://nodejs.org/) **22 o superior**
 - Un número de WhatsApp para el bot (de preferencia secundario)
 - Opcional: una clave gratis de al menos un proveedor de IA ([Groq](https://console.groq.com/keys), [Gemini](https://aistudio.google.com/apikey) u [OpenRouter](https://openrouter.ai/keys)). Sin claves, el bot funciona igual pero sin IA.
 
-## ⚡ Empezar en tu computadora
+## Empezar en tu computadora
 
 ```bash
 git clone https://github.com/samuelhuicab/Bot_15_Diciembre.git
@@ -43,11 +43,11 @@ Arranca el bot:
 npm run dev
 ```
 
-Escanea el QR con el celular del bot (WhatsApp → **Dispositivos vinculados** → **Vincular un dispositivo**). Si el QR se ve mal en la terminal, se abre solo en tu navegador (también está en `data/qr.html`). Cuando diga **"WhatsApp listo ✅"**, mándale `!help` desde otro número.
+Escanea el QR con el celular del bot (WhatsApp → **Dispositivos vinculados** → **Vincular un dispositivo**). Si el QR se ve mal en la terminal, se abre solo en tu navegador (también está en `data/qr.html`). Cuando diga **"WhatsApp listo"**, mándale `!help` desde otro número.
 
 La sesión se guarda en `data/`: la próxima vez ya no pide QR. Para cambiar de número, borra esa carpeta.
 
-## ⚙️ Configuración (`.env`)
+## Configuración (`.env`)
 
 | Variable                                                 | Qué hace                                                                                    | Default                  |
 | -------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------ |
@@ -69,23 +69,23 @@ Si algo está mal escrito, el bot no arranca y te dice exactamente qué corregir
 
 > Los nombres de los modelos gratis cambian seguido. Si un proveedor responde "modelo no existe", el log lo avisa: actualiza su `*_MODEL` en `.env` y reinicia.
 
-## 💬 Comandos incluidos
+## Comandos incluidos
 
-| Comando                        | Qué hace                                                  |
-| ------------------------------ | --------------------------------------------------------- |
-| `!help [comando]`              | Lista de comandos o detalle de uno                        |
-| `!ping`                        | ¿Está vivo? Y cuánto lleva despierto                      |
-| `!clima <ciudad>`              | Clima actual y del día (`!clima Monterrey, Colombia`)     |
-| `!cambio [cantidad] [de] [a]`  | Tipo de cambio entre 160+ monedas (`!cambio 100 usd mxn`) |
-| `!recuerda <tiempo> <texto>`   | Recordatorio en el chat (`!recuerda 30m sacar la pizza`)  |
-| `!elige a, b o c`              | Elige al azar                                             |
-| `!calc <operación>`            | Calculadora (`!calc 850*15%`, `!calc raiz(144)`)          |
-| `!ia <pregunta>` 🤖            | Pregunta a la IA                                          |
-| `!traduce <idioma> <texto>` 🤖 | Traduce con la IA                                         |
+| Comando                       | Qué hace                                                   |
+| ----------------------------- | ---------------------------------------------------------- |
+| `!help [comando]`             | Lista de comandos o detalle de uno                         |
+| `!ping`                       | Comprueba que el bot responde y cuánto tiempo lleva activo |
+| `!clima <ciudad>`             | Clima actual y del día (`!clima Monterrey, Colombia`)      |
+| `!cambio [cantidad] [de] [a]` | Tipo de cambio entre 160+ monedas (`!cambio 100 usd mxn`)  |
+| `!recuerda <tiempo> <texto>`  | Recordatorio en el chat (`!recuerda 30m sacar la pizza`)   |
+| `!elige a, b o c`             | Elige al azar                                              |
+| `!calc <operación>`           | Calculadora (`!calc 850*15%`, `!calc raiz(144)`)           |
+| `!ia <pregunta>`              | Pregunta a la IA (usa IA)                                  |
+| `!traduce <idioma> <texto>`   | Traduce un texto (usa IA)                                  |
 
-🤖 = usa IA (tiene cooldown de IA). `!help` marca con 🔒 los comandos privados.
+Los comandos que usan IA tienen su propio cooldown por persona (`AI_USER_COOLDOWN`). En WhatsApp, `!help` marca con un ícono los comandos que usan IA y los privados.
 
-## 🎭 Personalidad y comandos privados
+## Personalidad y comandos privados
 
 Todo lo que pongas en `private/` es **tuyo**: git lo ignora y nunca se sube.
 
@@ -97,7 +97,7 @@ Guía completa para crear comandos: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
-## 🚀 Instalar en un servidor Ubuntu 24.04
+## Instalar en un servidor Ubuntu 24.04
 
 Funciona en un VPS pequeño (1 vCPU, 1–2 GB de RAM) y también en un servidor que ya corre otras cosas (Odoo, nginx, bases de datos…): el bot vive en su propio usuario con su propio Node, sin tocar lo demás.
 
@@ -201,7 +201,7 @@ Como `botsito`, dentro de `~/botsito`:
 npm start
 ```
 
-Escanea el QR **con el celular del bot** (WhatsApp → Dispositivos vinculados → Vincular un dispositivo). Cuando en los logs salga `"WhatsApp listo ✅"`, prueba `!ping` desde otro número y apágalo con **Ctrl+C**.
+Escanea el QR **con el celular del bot** (WhatsApp → Dispositivos vinculados → Vincular un dispositivo). Cuando en los logs salga `"WhatsApp listo"`, prueba `!ping` desde otro número y apágalo con **Ctrl+C**.
 
 ### 7. Dejarlo corriendo para siempre
 
@@ -224,13 +224,13 @@ Debe decir `enabled`.
 
 > La hora del bot (logs y recordatorios) es la de México, configurada en `ecosystem.config.cjs` (`TZ`), sin cambiar la del servidor.
 
-### 🔧 Uso diario
+### Uso diario
 
 Entra como el usuario del bot con `sudo -iu botsito` y:
 
 | Qué              | Comando                            |
 | ---------------- | ---------------------------------- |
-| Ver si está vivo | `pm2 status`                       |
+| Ver el estado    | `pm2 status`                       |
 | Ver logs en vivo | `pm2 logs botsito` (salir: Ctrl+C) |
 | Reiniciar        | `pm2 restart botsito`              |
 | Apagar           | `pm2 stop botsito`                 |
@@ -238,7 +238,7 @@ Entra como el usuario del bot con `sudo -iu botsito` y:
 
 Sin entrar: `sudo -iu botsito bash -ic 'pm2 status'`.
 
-### 🔄 Actualizar el bot
+### Actualizar el bot
 
 1. En tu computadora, vuelve a crear `botsito.tgz` (paso 0) y súbelo con `scp` (paso 5).
 2. En el servidor:
@@ -252,7 +252,7 @@ cd ~/botsito && npm ci --omit=dev && pm2 restart botsito
 
 La sesión de WhatsApp (`data/`) no se toca, así que no pide QR otra vez.
 
-### 🆘 Problemas comunes
+### Problemas comunes
 
 - **El QR sale con letras raras (`Ôûä`):** sal del servidor y, en PowerShell, corre `chcp 65001` antes de volver a conectarte con `ssh`. Si se ve deforme, reduce el zoom (Ctrl + -).
 - **Escaneaste con el celular equivocado / cambiar de número:** `pm2 stop botsito`, `rm -rf ~/botsito/data`, `npm start` para escanear el QR correcto, Ctrl+C y `pm2 restart botsito`. En el celular equivocado, cierra la sesión en Dispositivos vinculados.
@@ -263,7 +263,7 @@ La sesión de WhatsApp (`data/`) no se toca, así que no pide QR otra vez.
 
 ---
 
-## 🧪 Desarrollo
+## Desarrollo
 
 | Comando                | Qué hace                                      |
 | ---------------------- | --------------------------------------------- |
@@ -274,7 +274,7 @@ La sesión de WhatsApp (`data/`) no se toca, así que no pide QR otra vez.
 | `npm run format`       | Formatea con Prettier                         |
 | `npm run format:check` | Revisa el formato sin cambiar nada            |
 
-## 🗂️ Estructura
+## Estructura
 
 ```
 src/            el motor (casi nadie lo toca)
@@ -290,10 +290,10 @@ test/           tests
 data/           sesión de WhatsApp (no se sube)
 ```
 
-## 🤝 Contribuir
+## Contribuir
 
 ¿Quieres agregar un comando o arreglar algo? Lee [CONTRIBUTING.md](CONTRIBUTING.md). Los reportes de bugs e ideas van en [Issues](https://github.com/samuelhuicab/Bot_15_Diciembre/issues).
 
-## 📄 Licencia
+## Licencia
 
 [MIT](LICENSE)

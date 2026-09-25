@@ -1,4 +1,4 @@
-name: 🐛 Reportar un bug
+name: Reportar un bug
 description: Algo no funciona como debería
 labels: [bug]
 body:
