@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Configuración con secretos
+.env
+
+# Sesión de WhatsApp
+data/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Todo lo privado, excepto la plantilla de ejemplo
+private/*
+!private/commands/
+private/commands/*
+!private/commands/_ejemplo.js
+
+# Logs
+*.log
+logs/
