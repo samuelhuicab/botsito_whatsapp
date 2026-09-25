@@ -18,7 +18,7 @@ function aiNotAllowed(commandName) {
  * @param {string} options.text
  * @param {boolean} options.isOwner
  * @param {{ name: string, prefix: string }} options.bot
- * @param {object[]} options.commands   lista de comandos (para !ayuda)
+ * @param {object[]} options.commands   lista de comandos (para !help)
  * @param {object} [options.services]   { http, ai }
  */
 export function createContext({ message, command, args, text, isOwner, bot, commands, services }) {

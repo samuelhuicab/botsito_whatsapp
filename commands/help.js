@@ -1,4 +1,4 @@
-// !ayuda — lista de comandos, generada sola a partir de cada comando.
+// !help — lista de comandos, generada sola a partir de cada comando.
 // 🤖 = usa IA · 🔒 = comando privado (solo existe en este servidor)
 
 function badges(command) {
@@ -6,20 +6,20 @@ function badges(command) {
 }
 
 export default {
-  name: 'ayuda',
-  aliases: ['help', 'comandos'],
+  name: 'help',
+  aliases: ['comandos'],
   description: 'Muestra los comandos disponibles',
-  usage: '!ayuda [comando]',
+  usage: '!help [comando]',
   async run(ctx) {
     const { prefix, name } = ctx.bot;
     const visible = ctx.commands.filter((c) => ctx.isOwner || !c.ownerOnly);
 
-    // !ayuda <comando> → detalle de uno
+    // !help <comando> → detalle de uno
     if (ctx.args[0]) {
       const wanted = ctx.args[0].replace(prefix, '').toLowerCase();
       const command = visible.find((c) => c.name === wanted || c.aliases.includes(wanted));
       if (!command) {
-        await ctx.reply(`No conozco ese comando 🤔 Escribe ${prefix}ayuda para ver la lista.`);
+        await ctx.reply(`No conozco ese comando 🤔 Escribe ${prefix}help para ver la lista.`);
         return;
       }
       const lines = [`*${prefix}${command.name}*${badges(command)}`];
@@ -42,7 +42,7 @@ export default {
         '',
         ...list,
         '',
-        `Más detalle: ${prefix}ayuda <comando>`,
+        `Más detalle: ${prefix}help <comando>`,
         '🤖 usa IA · 🔒 comando privado',
       ].join('\n'),
     );

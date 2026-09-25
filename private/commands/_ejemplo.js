@@ -9,9 +9,9 @@
 //   3. Agrega tus claves al FINAL de tu .env (no a .env.example, porque son privadas):
 //        EJEMPLO_API_URL=https://tu-api.com/ranking
 //        EJEMPLO_API_KEY=tu-clave
-//   4. Reinicia el bot. Aparecerá en !ayuda con 🔒.
+//   4. Reinicia el bot. Aparecerá en !help con 🔒.
 //
-// Si le pones el mismo name que un comando público (ej. 'ayuda'), el tuyo lo reemplaza.
+// Si le pones el mismo name que un comando público (ej. 'help'), el tuyo lo reemplaza.
 
 export default {
   name: 'ejemplo',

@@ -10,7 +10,7 @@ El bot hace tres tipos de cosas, y deben estar claramente separadas:
 
 | Tipo | Ejemplo | ¿Usa IA? | ¿Llama APIs externas? |
 |---|---|---|---|
-| Comando normal | `!ping`, `!ayuda` | No | No |
+| Comando normal | `!ping`, `!help` | No | No |
 | Comando con API externa | `!rank` (privado del dueño) | No | Sí, con `ctx.http` |
 | Comando o plática con IA | `!resume`, "bot ¿qué onda?" | Sí, con `ctx.ai` | Solo la de IA |
 
@@ -55,7 +55,7 @@ Objetivo: que cualquiera pueda clonarlo, poner sus claves en `.env`, escanear un
 │       ├── http.js               # fetch con timeout y errores claros (ctx.http)
 │       └── logger.js
 ├── commands/                     # COMANDOS PÚBLICOS (se suben al repo)
-│   ├── ayuda.js
+│   ├── help.js
 │   ├── ping.js
 │   ├── ia.js                     # ejemplo de comando que usa ctx.ai
 │   ├── traduce.js                # usa ctx.ai
@@ -93,8 +93,8 @@ export default {
   name: 'rank',                 // se usa como !rank
   aliases: ['top'],             // opcional
   description: 'Muestra el ranking',
-  usage: '!rank [usuario]',     // opcional, para !ayuda
-  usesAI: false,                // true si llama a ctx.ai (aplica cooldown de IA y 🤖 en !ayuda)
+  usage: '!rank [usuario]',     // opcional, para !help
+  usesAI: false,                // true si llama a ctx.ai (aplica cooldown de IA y 🤖 en !help)
   groupOnly: false,             // opcional
   ownerOnly: false,             // opcional, solo OWNER_NUMBER
   cooldownSeconds: 5,           // opcional
@@ -109,7 +109,7 @@ export default {
 - `reply(texto)`, `react(emoji)`, `typing()` (muestra "escribiendo…")
 - `args` (array), `text` (texto después del comando)
 - `sender` ({ id, name }), `chat` ({ id, isGroup, name }), `isOwner`
-- `bot` ({ name, prefix }), `commands` (lista de comandos cargados, la usa `!ayuda`)
+- `bot` ({ name, prefix }), `commands` (lista de comandos cargados, la usa `!help`)
 - `http` → `ctx.http.get(url, opts)` / `ctx.http.post(url, body, opts)` (también `put`, `patch`, `delete`): fetch con timeout, devuelve JSON (o texto), lanza `HttpError` con `status` (null si no hubo respuesta). `opts`: `{ headers, query, timeout }`.
 - `ai` → `ctx.ai.ask(prompt, { system })`: pasa por el router con fallback y siempre devuelve texto (un aviso amable si falla). Solo existe si `usesAI: true`; sin eso, lanza un error que explica el problema.
 - `env` → `process.env` (para que los comandos privados lean sus propias claves).
@@ -119,10 +119,10 @@ export default {
 
 - `src/core/loader.js` carga todos los `.js` de `commands/` y luego de `private/commands/`.
 - Se ignoran archivos que empiezan con `_`.
-- Si un comando privado tiene el mismo `name` que uno público, **el privado lo reemplaza** (log de aviso). Así alguien puede personalizar `!ayuda` sin tocar el repo.
+- Si un comando privado tiene el mismo `name` que uno público, **el privado lo reemplaza** (log de aviso). Así alguien puede personalizar `!help` sin tocar el repo.
 - Nombres/aliases duplicados dentro del mismo grupo → error claro al arrancar.
 - Un comando que falla al cargar no tumba el bot: se loggea y se omite.
-- `!ayuda` se genera sola con `name`, `description`, `usage`, marcando 🤖 los que usan IA y 🔒 los privados.
+- `!help` se genera sola con `name`, `description`, `usage`, marcando 🤖 los que usan IA y 🔒 los privados.
 
 ### Secretos de comandos privados
 
@@ -201,7 +201,7 @@ pm2 start ecosystem.config.cjs
 
 1. **Base** (package.json, dependencias y carpetas ya existen; revisar y completar): ESLint/Prettier, `.gitignore` con las reglas de `private/`, `.env.example`, `LICENSE`, `config.js`, logger.
 2. **WhatsApp**: adaptador, QR, sesión persistente, mensajes normalizados.
-3. **Comandos**: loader (públicos + privados + override), `ctx`, cooldowns, handler, `!ping`, `!ayuda`, `private/commands/_ejemplo.js`. Tests del loader.
+3. **Comandos**: loader (públicos + privados + override), `ctx`, cooldowns, handler, `!ping`, `!help`, `private/commands/_ejemplo.js`. Tests del loader.
 4. **HTTP**: `utils/http.js` y `ctx.http`. El ejemplo privado muestra cómo llamar una API con clave de `.env`.
 5. **IA**: providers + router + `ctx.ai` + modo plática + `commands/ia.js`. Tests del router con proveedores falsos (429, 500, timeout).
 6. **Producción**: `ecosystem.config.cjs`, guía de Ubuntu 24.04 en el README.
