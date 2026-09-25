@@ -7,11 +7,10 @@ import path from 'node:path';
 import qrcode from 'qrcode-terminal';
 import wwebjs from 'whatsapp-web.js';
 import { createLogger } from '../utils/logger.js';
+import { openInBrowser, removeQrPage, writeQrPage } from './qr.js';
 
 const { Client, LocalAuth } = wwebjs;
 const log = createLogger('whatsapp');
-
-const DATA_PATH = path.resolve('data');
 
 /**
  * @typedef {object} NormalizedMessage
@@ -24,6 +23,7 @@ const DATA_PATH = path.resolve('data');
  * @property {() => Promise<void>} resolve  llena chat.name y sender.phone (hace llamadas extra; usar solo si se va a responder)
  * @property {(text: string) => Promise<void>} reply
  * @property {(emoji: string) => Promise<void>} react
+ * @property {() => Promise<void>} typing   muestra "escribiendo…" en el chat
  */
 
 /** Saca los dígitos de un id tipo "5215512345678@c.us"; null si no es un número de teléfono. */
@@ -39,12 +39,14 @@ export function isBotMentioned(mentionedIds, botIds) {
 
 /**
  * Crea el adaptador. Eventos:
- * - 'qr'           (string)            código QR (ya se imprime en la terminal)
+ * - 'qr'           (string)            código QR (ya se imprime en la terminal y en data/qr.html)
  * - 'ready'        ({ id, name })
  * - 'disconnected' (reason)
  * - 'message'      (NormalizedMessage)
+ *
+ * @param {{ dataPath: string }} options  carpeta donde se guarda la sesión
  */
-export function createWhatsAppClient() {
+export function createWhatsAppClient({ dataPath }) {
   const events = new EventEmitter();
   /** ids con los que el bot puede aparecer en menciones (@c.us y @lid) */
   const botIds = new Set();
@@ -52,20 +54,33 @@ export function createWhatsAppClient() {
   const phoneCache = new Map();
 
   const client = new Client({
-    authStrategy: new LocalAuth({ dataPath: DATA_PATH }),
+    authStrategy: new LocalAuth({ dataPath }),
     puppeteer: {
       headless: true,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     },
   });
 
-  client.on('qr', (qr) => {
-    log.info('Escanea el QR con WhatsApp → Dispositivos vinculados');
-    qrcode.generate(qr, { small: true });
+  const qrFile = path.join(dataPath, 'qr.html');
+  let qrOpened = false;
+
+  client.on('qr', async (qr) => {
+    // En Windows se usa el QR grande: solo espacios con color, se ve aunque la consola no sea UTF-8.
+    qrcode.generate(qr, { small: process.platform !== 'win32' });
+    try {
+      await writeQrPage(qrFile, qr);
+      log.info({ file: qrFile }, 'Escanea el QR (si no se ve bien aquí, abre este archivo)');
+      if (!qrOpened) qrOpened = openInBrowser(qrFile);
+    } catch (err) {
+      log.warn({ err: err.message }, 'No se pudo guardar el QR como imagen');
+    }
     events.emit('qr', qr);
   });
 
-  client.on('authenticated', () => log.info('Sesión autenticada'));
+  client.on('authenticated', () => {
+    log.info('Sesión autenticada');
+    removeQrPage(qrFile).catch(() => {});
+  });
 
   client.on('auth_failure', (reason) => {
     log.error({ reason }, 'Falló la autenticación; borra la carpeta data/ y vuelve a escanear');
@@ -150,6 +165,15 @@ export function createWhatsAppClient() {
 
       async react(emoji) {
         await msg.react(emoji);
+      },
+
+      async typing() {
+        try {
+          const chat = await msg.getChat();
+          await chat.sendStateTyping();
+        } catch {
+          // "escribiendo…" es solo cosmético; si falla no pasa nada
+        }
       },
     };
     return message;

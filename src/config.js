@@ -87,15 +87,15 @@ export function loadConfig(env = process.env) {
       providers: {
         groq: {
           apiKey: readString(env, 'GROQ_API_KEY'),
-          model: readString(env, 'GROQ_MODEL', 'llama-3.3-70b-versatile'),
+          model: readString(env, 'GROQ_MODEL', 'openai/gpt-oss-120b'),
         },
         gemini: {
           apiKey: readString(env, 'GEMINI_API_KEY'),
-          model: readString(env, 'GEMINI_MODEL', 'gemini-2.5-flash'),
+          model: readString(env, 'GEMINI_MODEL', 'gemini-flash-lite-latest'),
         },
         openrouter: {
           apiKey: readString(env, 'OPENROUTER_API_KEY'),
-          model: readString(env, 'OPENROUTER_MODEL', 'meta-llama/llama-3.3-70b-instruct:free'),
+          model: readString(env, 'OPENROUTER_MODEL', 'openrouter/free'),
         },
       },
     },

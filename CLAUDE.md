@@ -57,8 +57,16 @@ Objetivo: que cualquiera pueda clonarlo, poner sus claves en `.env`, escanear un
 ├── commands/                     # COMANDOS PÚBLICOS (se suben al repo)
 │   ├── ayuda.js
 │   ├── ping.js
-│   └── ia.js                     # ejemplo de comando que usa ctx.ai
-├── private/                      # TODO lo privado (en .gitignore, excepto el ejemplo)
+│   ├── ia.js                     # ejemplo de comando que usa ctx.ai
+│   ├── traduce.js                # usa ctx.ai
+│   ├── clima.js                  # Open-Meteo (sin clave) vía ctx.http
+│   ├── cambio.js                 # open.er-api.com (sin clave) vía ctx.http
+│   ├── recuerda.js               # recordatorios en memoria (se pierden al reiniciar)
+│   ├── elige.js
+│   └── calc.js                   # calculadora con parser propio (sin eval)
+├── private/                      # TODO lo privado (en .gitignore, excepto las plantillas "_")
+│   ├── _prompt.js                # plantilla de personalidad; se copia como prompt.js
+│   ├── prompt.js                 # (del dueño, NO se sube) personalidad del bot; si no existe se usa src/ai/prompts.js
 │   └── commands/
 │       ├── _ejemplo.js           # plantilla que SÍ se sube; se ignora al cargar por empezar con "_"
 │       └── rank.js               # (del dueño, NO se sube) llama a su API
@@ -98,11 +106,12 @@ export default {
 
 ### `ctx`
 
-- `reply(texto)`, `react(emoji)`
+- `reply(texto)`, `react(emoji)`, `typing()` (muestra "escribiendo…")
 - `args` (array), `text` (texto después del comando)
 - `sender` ({ id, name }), `chat` ({ id, isGroup, name }), `isOwner`
-- `http` → `ctx.http.get(url, opts)` / `ctx.http.post(url, body, opts)`: fetch con timeout, devuelve JSON, lanza error claro.
-- `ai` → `ctx.ai.ask(prompt, { system })`: pasa por el router con fallback. Solo usar si `usesAI: true`.
+- `bot` ({ name, prefix }), `commands` (lista de comandos cargados, la usa `!ayuda`)
+- `http` → `ctx.http.get(url, opts)` / `ctx.http.post(url, body, opts)` (también `put`, `patch`, `delete`): fetch con timeout, devuelve JSON (o texto), lanza `HttpError` con `status` (null si no hubo respuesta). `opts`: `{ headers, query, timeout }`.
+- `ai` → `ctx.ai.ask(prompt, { system })`: pasa por el router con fallback y siempre devuelve texto (un aviso amable si falla). Solo existe si `usesAI: true`; sin eso, lanza un error que explica el problema.
 - `env` → `process.env` (para que los comandos privados lean sus propias claves).
 - `log` → logger con el nombre del comando.
 
@@ -137,11 +146,12 @@ Van en `.env` con cualquier nombre (ej. `RANK_API_URL`, `RANK_API_KEY`) y se lee
 - Orden = `AI_PROVIDER_ORDER`. 429 → bloquear `AI_COOLDOWN_ON_429` s. 5xx/timeout → siguiente. 401/403 → log "clave inválida de X" y desactivar hasta reiniciar.
 - Timeout ~20 s, `max_tokens` bajo (≈300). Si todos fallan, mensaje amable, nunca crashear.
 - Historial en memoria de los últimos `AI_HISTORY_SIZE` mensajes por chat (solo modo plática).
+- Personalidad (system prompt): `private/prompt.js` (texto o función `({ botName }) => texto`) si existe; si no, la pública de `src/ai/prompts.js`. En grupos siempre se agrega la nota de formato "Nombre: mensaje". Opcional: `export const randomReplies = [{ text, chance }]` en `private/prompt.js` → respuestas al azar en modo plática, sin usar IA.
 - Nunca loggear claves ni contenido completo de mensajes.
 
 ## Reglas del proyecto
 
-- `.gitignore` debe incluir: `node_modules/`, `.env`, `data/`, `.wwebjs_auth/`, `.wwebjs_cache/`, `private/*` con excepción `!private/commands/` → `private/commands/*` + `!private/commands/_ejemplo.js`. Verificar con `git status` que un comando privado de prueba NO aparece.
+- `.gitignore` debe incluir: `node_modules/`, `.env`, `data/`, `.wwebjs_auth/`, `.wwebjs_cache/`, `private/*` con excepciones `!private/_prompt.js` y `!private/commands/` → `private/commands/*` + `!private/commands/_ejemplo.js`. Verificar con `git status` que un comando privado de prueba NO aparece.
 - Configuración general en `.env`, documentada en `.env.example` con comentarios en español.
 - Mensajes al usuario: español, cortos, con buena onda.
 - Código: identificadores en inglés; comentarios y docs en español.
@@ -163,11 +173,11 @@ AI_COOLDOWN_ON_429=60
 AI_PROVIDER_ORDER=groq,gemini,openrouter
 
 GROQ_API_KEY=
-GROQ_MODEL=llama-3.3-70b-versatile
+GROQ_MODEL=openai/gpt-oss-120b
 GEMINI_API_KEY=
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-flash-lite-latest
 OPENROUTER_API_KEY=
-OPENROUTER_MODEL=meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=openrouter/free
 
 HTTP_TIMEOUT=10
 LOG_LEVEL=info

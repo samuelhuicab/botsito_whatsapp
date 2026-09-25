@@ -9,8 +9,9 @@ data/
 .wwebjs_auth/
 .wwebjs_cache/
 
-# Todo lo privado, excepto la plantilla de ejemplo
+# Todo lo privado, excepto las plantillas
 private/*
+!private/_prompt.js
 !private/commands/
 private/commands/*
 !private/commands/_ejemplo.js
