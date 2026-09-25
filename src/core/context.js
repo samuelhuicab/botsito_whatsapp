@@ -26,6 +26,7 @@ export function createContext({ message, command, args, text, isOwner, bot, comm
     reply: (content) => message.reply(content),
     react: (emoji) => message.react(emoji),
     typing: () => message.typing?.() ?? Promise.resolve(),
+    replyFile: (filePath, opts) => message.replyFile(filePath, opts),
     args,
     text,
     sender: { id: message.sender.id, name: message.sender.name },

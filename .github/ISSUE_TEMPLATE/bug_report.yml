@@ -1,0 +1,58 @@
+name: 🐛 Reportar un bug
+description: Algo no funciona como debería
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ¡Gracias por avisar! **No pegues claves, números de teléfono ni tu `.env`.**
+  - type: textarea
+    id: what
+    attributes:
+      label: ¿Qué pasó?
+      description: Describe el problema.
+      placeholder: Cuando mando !clima Monterrey el bot responde "Algo salió mal 😅"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: ¿Cómo lo reproduzco?
+      placeholder: |
+        1. Arranco el bot con npm run dev
+        2. Mando "!clima Monterrey" desde otro número
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: ¿Qué esperabas que pasara?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Las líneas de error del log (las que tienen "level":50 o "level":60). Revisa que no tengan claves.
+      render: shell
+  - type: input
+    id: node
+    attributes:
+      label: Versión de Node.js
+      description: Salida de `node -v`
+      placeholder: v24.21.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: ¿Dónde corre el bot?
+      options:
+        - Windows
+        - macOS
+        - Linux (servidor / VPS)
+        - Linux (escritorio)
+        - Otro
+    validations:
+      required: true

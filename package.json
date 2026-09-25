@@ -2,6 +2,14 @@
   "name": "botsito",
   "version": "1.0.0",
   "description": "Bot de WhatsApp open source y extensible, con IA gratis",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuelhuicab/Bot_15_Diciembre.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samuelhuicab/Bot_15_Diciembre/issues"
+  },
+  "homepage": "https://github.com/samuelhuicab/Bot_15_Diciembre#readme",
   "main": "src/index.js",
   "type": "module",
   "engines": {
@@ -13,9 +21,19 @@
     "test": "node --test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "postinstall": "node scripts/patch-whatsapp-web.js"
   },
-  "keywords": [],
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "whatsapp-web.js",
+    "ai",
+    "groq",
+    "gemini",
+    "openrouter",
+    "espanol"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {

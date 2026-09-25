@@ -9,7 +9,7 @@ import wwebjs from 'whatsapp-web.js';
 import { createLogger } from '../utils/logger.js';
 import { openInBrowser, removeQrPage, writeQrPage } from './qr.js';
 
-const { Client, LocalAuth } = wwebjs;
+const { Client, LocalAuth, MessageMedia } = wwebjs;
 const log = createLogger('whatsapp');
 
 /**
@@ -24,6 +24,8 @@ const log = createLogger('whatsapp');
  * @property {(text: string) => Promise<void>} reply
  * @property {(emoji: string) => Promise<void>} react
  * @property {() => Promise<void>} typing   muestra "escribiendo…" en el chat
+ * @property {(filePath: string, opts?: { caption?: string, asDocument?: boolean }) => Promise<void>} replyFile
+ *           responde con un archivo (audio, imagen, video, documento); el tipo se detecta por la extensión
  */
 
 /** Saca los dígitos de un id tipo "5215512345678@c.us"; null si no es un número de teléfono. */
@@ -165,6 +167,11 @@ export function createWhatsAppClient({ dataPath }) {
 
       async react(emoji) {
         await msg.react(emoji);
+      },
+
+      async replyFile(filePath, { caption, asDocument = false } = {}) {
+        const media = MessageMedia.fromFilePath(filePath);
+        await msg.reply(media, undefined, { caption, sendMediaAsDocument: asDocument });
       },
 
       async typing() {

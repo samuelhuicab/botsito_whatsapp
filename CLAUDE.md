@@ -67,9 +67,12 @@ Objetivo: que cualquiera pueda clonarlo, poner sus claves en `.env`, escanear un
 ├── private/                      # TODO lo privado (en .gitignore, excepto las plantillas "_")
 │   ├── _prompt.js                # plantilla de personalidad; se copia como prompt.js
 │   ├── prompt.js                 # (del dueño, NO se sube) personalidad del bot; si no existe se usa src/ai/prompts.js
+│   ├── media/                    # (del dueño, NO se sube) audios, imágenes, etc. para comandos privados
 │   └── commands/
 │       ├── _ejemplo.js           # plantilla que SÍ se sube; se ignora al cargar por empezar con "_"
 │       └── rank.js               # (del dueño, NO se sube) llama a su API
+├── scripts/
+│   └── patch-whatsapp-web.js     # postinstall: parche temporal para enviar archivos (bug wwebjs #201922); quitar cuando salga el fix oficial
 ├── test/
 ├── data/                         # sesión de WhatsApp (en .gitignore)
 ├── .env.example
@@ -107,6 +110,7 @@ export default {
 ### `ctx`
 
 - `reply(texto)`, `react(emoji)`, `typing()` (muestra "escribiendo…")
+- `replyFile(ruta, { caption, asDocument })`: responde con un archivo (audio, imagen, video, documento; el tipo sale de la extensión). Los archivos privados van en `private/media/`.
 - `args` (array), `text` (texto después del comando)
 - `sender` ({ id, name }), `chat` ({ id, isGroup, name }), `isOwner`
 - `bot` ({ name, prefix }), `commands` (lista de comandos cargados, la usa `!help`)

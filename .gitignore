@@ -4,6 +4,9 @@ node_modules/
 # Configuración con secretos
 .env
 
+# Paquete para subir al servidor (lleva el .env y private/ adentro)
+*.tgz
+
 # Sesión de WhatsApp
 data/
 .wwebjs_auth/

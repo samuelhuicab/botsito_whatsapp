@@ -1,0 +1,37 @@
+name: 💡 Proponer una idea
+description: Un comando nuevo o una mejora
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: ¿Qué te gustaría?
+      placeholder: Un comando !sticker que convierta una imagen en sticker
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: ¿Para qué serviría?
+      description: ¿Qué problema resuelve o por qué sería útil para la mayoría?
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Tipo
+      options:
+        - Comando público nuevo
+        - Mejora de un comando existente
+        - Mejora de la IA / modo plática
+        - Otra cosa
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Antes de enviar
+      options:
+        - label: Revisé que no exista ya un issue parecido
+          required: true
+        - label: Si necesita una API, es gratis y no pide clave (o usa la IA del bot)

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Cómo crear comandos
+    url: https://github.com/samuelhuicab/Bot_15_Diciembre/blob/main/CONTRIBUTING.md
+    about: Guía para crear comandos públicos y privados
